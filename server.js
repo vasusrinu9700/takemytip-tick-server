@@ -129,8 +129,8 @@ app.post('/api/fyers/validate-token', async (req, res) => {
       return res.status(401).json({ ok: false, message: msg, raw: response });
     }
   } catch (err) {
-    console.error('❌ /api/fyers/validate-token error:', err.message);
-    return res.status(500).json({ ok: false, message: err.message });
+    console.error('❌ /api/fyers/validate-token error:', err);
+    return res.status(500).json({ ok: false, message: err.message || String(err), stack: err.stack });
   }
 });
 
@@ -168,8 +168,8 @@ app.post('/api/fyers/quotes', async (req, res) => {
       return res.status(502).json({ ok: false, message: msg, raw: response });
     }
   } catch (err) {
-    console.error('❌ /api/fyers/quotes error:', err.message);
-    return res.status(500).json({ ok: false, message: err.message });
+    console.error('❌ /api/fyers/quotes error:', err);
+    return res.status(500).json({ ok: false, message: err.message || String(err), stack: err.stack });
   }
 });
 
@@ -201,8 +201,8 @@ app.post('/api/fyers/option-chain', async (req, res) => {
       return res.status(502).json({ ok: false, message: msg, raw: response });
     }
   } catch (err) {
-    console.error('❌ /api/fyers/option-chain error:', err.message);
-    return res.status(500).json({ ok: false, message: err.message });
+    console.error('❌ /api/fyers/option-chain error:', err);
+    return res.status(500).json({ ok: false, message: err.message || String(err), stack: err.stack });
   }
 });
 
@@ -238,8 +238,8 @@ app.post('/api/fyers/history', async (req, res) => {
       return res.status(502).json({ ok: false, message: msg, raw: response });
     }
   } catch (err) {
-    console.error('❌ /api/fyers/history error:', err.message);
-    return res.status(500).json({ ok: false, message: err.message });
+    console.error('❌ /api/fyers/history error:', err);
+    return res.status(500).json({ ok: false, message: err.message || String(err), stack: err.stack });
   }
 });
 
@@ -262,8 +262,8 @@ app.get('/api/fyers/profile', async (req, res) => {
       return res.status(502).json({ ok: false, message: response?.message || 'Profile fetch failed' });
     }
   } catch (err) {
-    console.error('❌ /api/fyers/profile error:', err.message);
-    return res.status(500).json({ ok: false, message: err.message });
+    console.error('❌ /api/fyers/profile error:', err);
+    return res.status(500).json({ ok: false, message: err.message || String(err), stack: err.stack });
   }
 });
 
