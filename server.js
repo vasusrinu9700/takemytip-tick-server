@@ -134,22 +134,31 @@ app.post('/api/fyers/validate-token', async (req, res) => {
   }
 });
 
-// Quotes (POST) — { appId, accessToken, symbols: ["NSE:NIFTY50-INDEX", ...] }
+// Quotes (POST) — { appId, accessToken, symbols: ["NSE:NIFTY50-INDEX", ...] } or "NSE:NIFTY50-INDEX,..."
 app.post('/api/fyers/quotes', async (req, res) => {
   try {
     const appId = req.body.appId || fyersCredentials.appId;
     const accessToken = req.body.accessToken || fyersCredentials.accessToken;
-    const symbols = req.body.symbols;
+    let symbols = req.body.symbols;
 
     if (!appId || !accessToken) {
       return res.status(401).json({ ok: false, message: 'Missing Fyers credentials' });
     }
-    if (!symbols || !Array.isArray(symbols) || symbols.length === 0) {
-      return res.status(400).json({ ok: false, message: 'symbols array required' });
+
+    // Support both string (comma-separated) and array formats robustly
+    let symbolsArray = [];
+    if (Array.isArray(symbols)) {
+      symbolsArray = symbols;
+    } else if (typeof symbols === 'string') {
+      symbolsArray = symbols.split(',').map(s => s.trim()).filter(Boolean);
+    }
+
+    if (symbolsArray.length === 0) {
+      return res.status(400).json({ ok: false, message: 'symbols parameter (array or comma-separated string) required' });
     }
 
     const fyers = buildFyersModel(appId, accessToken);
-    const response = await fyers.getQuotes({ symbols: symbols.join(',') });
+    const response = await fyers.getQuotes({ symbols: symbolsArray.join(',') });
 
     if (response && response.s === 'ok') {
       return res.json({ ok: true, d: response.d, code: response.code });
