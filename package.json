@@ -1,0 +1,16 @@
+{
+  "name": "takemytip-tick-server",
+  "version": "1.0.0",
+  "description": "High-performance Node.js WebSocket Tick Server connecting FYERS Data WebSocket to React Client",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "fyers-api-v3": "^1.8.0",
+    "ws": "^8.17.0"
+  }
+}
